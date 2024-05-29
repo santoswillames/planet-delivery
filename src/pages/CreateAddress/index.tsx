@@ -4,6 +4,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { AddressContext } from '@/contexts/AddressContext'
+import { MoveLeft } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 export function CreateAddress() {
   const { updateStateEarthAddress, updateStateMarsAddress } =
@@ -39,9 +41,14 @@ export function CreateAddress() {
 
   return (
     <div className="space-y-8">
-      <h2 className="text-center text-3xl font-bold tracking-tight text-zinc-50">
-        Cadastre seu endereço
-      </h2>
+      <div className="flex items-center gap-6">
+        <Link to="/">
+          <MoveLeft size={24} className="text-zinc-50" />
+        </Link>
+        <h2 className="text-center text-3xl font-bold tracking-tight text-zinc-50">
+          Cadastre seu endereço
+        </h2>
+      </div>
       <Tabs defaultValue="earth" className="w-[400px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="earth">Planeta Terra</TabsTrigger>

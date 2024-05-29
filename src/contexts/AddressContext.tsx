@@ -18,7 +18,9 @@ interface AddressContextType {
   earthAddress: EarthAddress[]
   marsAddress: MarsAddress[]
   updateStateEarthAddress: (data: EarthAddress) => void
+  deleteEarthAddress: (id: string) => void
   updateStateMarsAddress: (data: MarsAddress) => void
+  deleteMarsAddress: (id: string) => void
 }
 
 interface AddressContextProviderProps {
@@ -96,6 +98,14 @@ export function AddressContextProvider({
     }
   }
 
+  function deleteEarthAddress(id: string) {
+    const newEarthAddress = earthAddress.filter((address) => {
+      return address.id !== id
+    })
+
+    setEarthAddress(newEarthAddress)
+  }
+
   function updateStateMarsAddress(data: MarsAddress) {
     const existMarsAddress = marsAddress.some(
       (address) => address.id === data.id,
@@ -116,13 +126,23 @@ export function AddressContextProvider({
     }
   }
 
+  function deleteMarsAddress(id: string) {
+    const newMarsAddress = marsAddress.filter((address) => {
+      return address.id !== id
+    })
+
+    setMarsAddress(newMarsAddress)
+  }
+
   return (
     <AddressContext.Provider
       value={{
         earthAddress,
         marsAddress,
         updateStateEarthAddress,
+        deleteEarthAddress,
         updateStateMarsAddress,
+        deleteMarsAddress,
       }}
     >
       {children}
