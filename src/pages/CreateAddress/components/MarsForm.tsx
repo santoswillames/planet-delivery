@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { AddressContext } from '@/contexts/AddressContext'
+import { AddressContext, MarsAddressInterface } from '@/contexts/AddressContext'
 
 import { toast } from '@/components/ui/use-toast'
 
@@ -18,33 +18,52 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import { ToastAction } from '@/components/ui/toast'
 
-const MarsFormSchema = z.object({
-  lote: z
-    .string()
-    .trim()
-    .min(1, {
-      message: 'O Lote precisa ter no mínimo um dígito',
-    })
-    .max(4, { message: 'O Lote precisa ter no máximo 4 dígitos' })
-    .toUpperCase(),
-})
+import { MarsFormSchema } from '../schema/formSchema'
+import { Link } from 'react-router-dom'
+import { TabsContext } from '@/contexts/TabsContext'
 
-export function MarsForm() {
+interface MarsFormProps {
+  address?: MarsAddressInterface
+  onChangeDialog?: (state: boolean) => void
+}
+
+export function MarsForm({ address, onChangeDialog }: MarsFormProps) {
   const { updateStateMarsAddress } = useContext(AddressContext)
+  const { onChangeTabs } = useContext(TabsContext)
 
   const form = useForm<z.infer<typeof MarsFormSchema>>({
     resolver: zodResolver(MarsFormSchema),
-    defaultValues: {
+    defaultValues: address || {
       lote: '',
     },
   })
 
   function handleMarsAddressSubmit(data: z.infer<typeof MarsFormSchema>) {
-    updateStateMarsAddress(data)
+    if (address) {
+      const newData = {
+        id: address.id,
+        ...data,
+      }
+      updateStateMarsAddress(newData)
+      onChangeDialog && onChangeDialog(false)
+    } else {
+      const id = String(new Date().getTime())
+      const newData = {
+        id,
+        ...data,
+      }
+      updateStateMarsAddress(newData)
+    }
     toast({
       title: 'Sucesso!',
       description: 'Seu endereço do planeta marte foi adicionado!',
+      action: (
+        <Link to="/" onClick={() => onChangeTabs('mars')}>
+          <ToastAction altText="Ver lista de endereço">Ver</ToastAction>
+        </Link>
+      ),
     })
     form.reset()
   }

@@ -1,13 +1,19 @@
+import { useContext } from 'react'
+
 import { Link } from 'react-router-dom'
 
 import { MoveLeft } from 'lucide-react'
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
+import { TabsContext } from '@/contexts/TabsContext'
+
 import { EarthForm } from './components/EarthForm'
 import { MarsForm } from './components/MarsForm'
 
 export function CreateAddress() {
+  const { tabs } = useContext(TabsContext)
+
   return (
     <div className="space-y-8">
       <div className="flex items-center gap-6">
@@ -18,7 +24,7 @@ export function CreateAddress() {
           Cadastre seu endereço
         </h2>
       </div>
-      <Tabs defaultValue="earth" className="md:w-[400px]">
+      <Tabs defaultValue={tabs} className="md:w-[400px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="earth">Planeta Terra</TabsTrigger>
           <TabsTrigger value="mars">Planeta Marte</TabsTrigger>

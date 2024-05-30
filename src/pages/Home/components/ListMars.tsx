@@ -15,6 +15,7 @@ import {
 import { Pen, Trash } from 'lucide-react'
 
 import { EmptyState } from '@/pages/components/EmptyState'
+import { EditAddress } from '@/pages/components/EditAddress'
 
 export function ListMars() {
   const { marsAddress, deleteMarsAddress } = useContext(AddressContext)
@@ -37,9 +38,11 @@ export function ListMars() {
             <TableCell className="text-slate-50 w-80">{address.lote}</TableCell>
 
             <TableCell className="text-center">
-              <Button size="icon" className="bg-inherit hover:bg-slate-950">
-                <Pen className="h-4 w-4" />
-              </Button>
+              <EditAddress dataMars={address}>
+                <Button size="icon" className="bg-inherit hover:bg-slate-950">
+                  <Pen className="h-4 w-4" />
+                </Button>
+              </EditAddress>
               <Button
                 size="icon"
                 className="bg-inherit hover:bg-slate-950"

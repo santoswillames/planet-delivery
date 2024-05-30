@@ -1,7 +1,5 @@
 import { useContext } from 'react'
 
-import { AddressContext } from '@/contexts/AddressContext'
-
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -18,61 +16,29 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import { ToastAction } from '@/components/ui/toast'
 
-const EarthFormSchema = z.object({
-  street: z
-    .string()
-    .trim()
-    .min(1, {
-      message: 'Este campo é obrigatório',
-    })
-    .max(90, {
-      message: 'Número de caracteres exedido! Maxímo 90 caracteres',
-    }),
-  homeNumber: z
-    .string()
-    .trim()
-    .min(1, {
-      message: 'Este campo é obrigatório',
-    })
-    .max(11, {
-      message: 'Número de caracteres exedido! Maxímo 11 caracteres',
-    }),
-  uf: z
-    .string()
-    .trim()
-    .min(1, {
-      message: 'Este campo é obrigatório',
-    })
-    .max(2, {
-      message: 'Por favor digite conforme o exemplo (SP)',
-    }),
-  postalCode: z
-    .string()
-    .trim()
-    .min(1, {
-      message: 'Este campo é obrigatório',
-    })
-    .max(16, {
-      message: 'Número de caracteres exedido! Maxímo 16 caracteres',
-    }),
-  country: z
-    .string()
-    .trim()
-    .min(1, {
-      message: 'Este campo é obrigatório',
-    })
-    .max(30, {
-      message: 'Número de caracteres exedido! Maxímo 30 caracteres',
-    }),
-})
+import {
+  AddressContext,
+  EarthAddressInterface,
+} from '@/contexts/AddressContext'
+import { TabsContext } from '@/contexts/TabsContext'
 
-export function EarthForm() {
+import { EarthFormSchema } from '../schema/formSchema'
+import { Link } from 'react-router-dom'
+
+interface EarthFormProps {
+  address?: EarthAddressInterface
+  onChangeDialog?: (state: boolean) => void
+}
+
+export function EarthForm({ address, onChangeDialog }: EarthFormProps) {
   const { updateStateEarthAddress } = useContext(AddressContext)
+  const { onChangeTabs } = useContext(TabsContext)
 
   const form = useForm<z.infer<typeof EarthFormSchema>>({
     resolver: zodResolver(EarthFormSchema),
-    defaultValues: {
+    defaultValues: address || {
       street: '',
       homeNumber: '',
       country: '',
@@ -82,10 +48,30 @@ export function EarthForm() {
   })
 
   function handleEarthAddressSubmit(data: z.infer<typeof EarthFormSchema>) {
-    updateStateEarthAddress(data)
+    if (address) {
+      const newData = {
+        id: address.id,
+        ...data,
+      }
+
+      updateStateEarthAddress(newData)
+      onChangeDialog && onChangeDialog(false)
+    } else {
+      const id = String(new Date().getTime())
+      const newData = {
+        id,
+        ...data,
+      }
+      updateStateEarthAddress(newData)
+    }
     toast({
       title: 'Sucesso!',
-      description: 'Seu endereço do planeta marte foi adicionado!',
+      description: 'Seu endereço do planeta terra foi adicionado!',
+      action: (
+        <Link to="/" onClick={() => onChangeTabs('earth')}>
+          <ToastAction altText="Ver lista de endereço">Ver</ToastAction>
+        </Link>
+      ),
     })
     form.reset()
   }
@@ -131,7 +117,7 @@ export function EarthForm() {
             </FormItem>
           )}
         />
-        <div className="flex items-center justify-between flex-wrap gap-2">
+        <div className="md:flex items-center justify-between flex-wrap gap-2">
           <FormField
             control={form.control}
             name="uf"
@@ -184,7 +170,6 @@ export function EarthForm() {
             </FormItem>
           )}
         />
-
         <Button
           className="group relative flex w-full justify-center rounded-md border border-transparent bg-zinc-600 py-2 px-4 text-sm font-medium text-zinc-50 hover:bg-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2"
           type="submit"

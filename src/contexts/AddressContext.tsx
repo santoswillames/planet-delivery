@@ -1,7 +1,7 @@
 import { ReactNode, createContext, useState, useEffect } from 'react'
 
-interface EarthAddress {
-  id?: string
+export interface EarthAddressInterface {
+  id: string
   street: string
   homeNumber: string
   uf: string
@@ -9,17 +9,17 @@ interface EarthAddress {
   country: string
 }
 
-interface MarsAddress {
-  id?: string
+export interface MarsAddressInterface {
+  id: string
   lote: string
 }
 
 interface AddressContextType {
-  earthAddress: EarthAddress[]
-  marsAddress: MarsAddress[]
-  updateStateEarthAddress: (data: EarthAddress) => void
+  earthAddress: EarthAddressInterface[]
+  marsAddress: MarsAddressInterface[]
+  updateStateEarthAddress: (data: EarthAddressInterface) => void
   deleteEarthAddress: (id: string) => void
-  updateStateMarsAddress: (data: MarsAddress) => void
+  updateStateMarsAddress: (data: MarsAddressInterface) => void
   deleteMarsAddress: (id: string) => void
 }
 
@@ -56,10 +56,10 @@ export const AddressContext = createContext({} as AddressContextType)
 export function AddressContextProvider({
   children,
 }: AddressContextProviderProps) {
-  const [earthAddress, setEarthAddress] = useState<EarthAddress[]>(() =>
-    getStorageEarthAddress(),
+  const [earthAddress, setEarthAddress] = useState<EarthAddressInterface[]>(
+    () => getStorageEarthAddress(),
   )
-  const [marsAddress, setMarsAddress] = useState<MarsAddress[]>(() =>
+  const [marsAddress, setMarsAddress] = useState<MarsAddressInterface[]>(() =>
     getStorageMarsAddress(),
   )
 
@@ -78,7 +78,7 @@ export function AddressContextProvider({
     )
   }, [earthAddress, marsAddress])
 
-  function updateStateEarthAddress(data: EarthAddress) {
+  function updateStateEarthAddress(data: EarthAddressInterface) {
     const existEarthAddress = earthAddress.some(
       (address) => data.id !== undefined && address.id === data.id,
     )
@@ -90,12 +90,7 @@ export function AddressContextProvider({
 
       setEarthAddress([...newEarthAddress, data])
     } else {
-      const id = String(new Date().getTime())
-      const newData = {
-        id,
-        ...data,
-      }
-      setEarthAddress((prev) => [...prev, newData])
+      setEarthAddress((prev) => [...prev, data])
     }
   }
 
@@ -107,7 +102,7 @@ export function AddressContextProvider({
     setEarthAddress(newEarthAddress)
   }
 
-  function updateStateMarsAddress(data: MarsAddress) {
+  function updateStateMarsAddress(data: MarsAddressInterface) {
     const existMarsAddress = marsAddress.some(
       (address) => data.id !== undefined && address.id === data.id,
     )
@@ -118,9 +113,7 @@ export function AddressContextProvider({
       })
       setMarsAddress([...newMarsAddress, data])
     } else {
-      const id = String(new Date().getTime())
-
-      setMarsAddress((prev) => [...prev, { lote: data.lote, id }])
+      setMarsAddress((prev) => [...prev, data])
     }
   }
 

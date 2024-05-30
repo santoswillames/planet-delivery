@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button'
 
 import { Pen, Trash } from 'lucide-react'
 import { EmptyState } from '@/pages/components/EmptyState'
+import { EditAddress } from '@/pages/components/EditAddress'
 
 export function ListEarth() {
   const { earthAddress, deleteEarthAddress } = useContext(AddressContext)
@@ -45,9 +46,11 @@ export function ListEarth() {
             </TableCell>
             <TableCell className="text-slate-50">{address.country}</TableCell>
             <TableCell className="text-center">
-              <Button size="icon" className="bg-inherit hover:bg-slate-950">
-                <Pen className="h-4 w-4" />
-              </Button>
+              <EditAddress dataEarth={address}>
+                <Button size="icon" className="bg-inherit hover:bg-slate-950">
+                  <Pen className="h-4 w-4" />
+                </Button>
+              </EditAddress>
               <Button
                 size="icon"
                 className="bg-inherit hover:bg-slate-950"
