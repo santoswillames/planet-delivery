@@ -1,7 +1,7 @@
 import { ReactNode, createContext, useState, useEffect } from 'react'
 
 interface EarthAddress {
-  id: string
+  id?: string
   street: string
   homeNumber: string
   uf: string
@@ -10,7 +10,7 @@ interface EarthAddress {
 }
 
 interface MarsAddress {
-  id: string
+  id?: string
   lote: string
 }
 
@@ -80,21 +80,22 @@ export function AddressContextProvider({
 
   function updateStateEarthAddress(data: EarthAddress) {
     const existEarthAddress = earthAddress.some(
-      (address) => address.id === data.id,
+      (address) => data.id !== undefined && address.id === data.id,
     )
 
     if (existEarthAddress) {
-      const newEarthAddress = earthAddress.map((address) => {
-        if (address.id === data.id) {
-          return data
-        } else {
-          return address
-        }
+      const newEarthAddress = earthAddress.filter((address) => {
+        return address.id !== data.id
       })
 
-      setEarthAddress(newEarthAddress)
+      setEarthAddress([...newEarthAddress, data])
     } else {
-      setEarthAddress((prev) => [...prev, data])
+      const id = String(new Date().getTime())
+      const newData = {
+        id,
+        ...data,
+      }
+      setEarthAddress((prev) => [...prev, newData])
     }
   }
 
@@ -108,21 +109,18 @@ export function AddressContextProvider({
 
   function updateStateMarsAddress(data: MarsAddress) {
     const existMarsAddress = marsAddress.some(
-      (address) => address.id === data.id,
+      (address) => data.id !== undefined && address.id === data.id,
     )
 
     if (existMarsAddress) {
-      const newMarsAddress = marsAddress.map((address) => {
-        if (address.id === data.id) {
-          return data
-        } else {
-          return address
-        }
+      const newMarsAddress = marsAddress.filter((address) => {
+        return address.id !== data.id
       })
-
-      setMarsAddress(newMarsAddress)
+      setMarsAddress([...newMarsAddress, data])
     } else {
-      setMarsAddress((prev) => [...prev, data])
+      const id = String(new Date().getTime())
+
+      setMarsAddress((prev) => [...prev, { lote: data.lote, id }])
     }
   }
 

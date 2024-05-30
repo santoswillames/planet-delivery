@@ -3,7 +3,14 @@ import { useContext } from 'react'
 import { AddressContext } from '@/contexts/AddressContext'
 
 import { Button } from '@/components/ui/button'
-import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 
 import { Pen, Trash } from 'lucide-react'
 
@@ -18,22 +25,25 @@ export function ListMars() {
 
   return (
     <Table>
+      <TableHeader>
+        <TableRow className="hover:bg-slate-900">
+          <TableHead className="w-80">Lote</TableHead>
+          <TableHead className="text-center">Ações</TableHead>
+        </TableRow>
+      </TableHeader>
       <TableBody>
         {marsAddress.map((address) => (
           <TableRow key={address.id} className="hover:bg-slate-900">
-            <TableCell className="text-zinc-50 ">Lote</TableCell>
-            <TableCell className="text-zinc-50">{address.lote}</TableCell>
+            <TableCell className="text-slate-50 w-80">{address.lote}</TableCell>
 
-            <TableCell className="text-right">
-              <Button size="icon" className="bg-in">
+            <TableCell className="text-center">
+              <Button size="icon" className="bg-inherit hover:bg-slate-950">
                 <Pen className="h-4 w-4" />
               </Button>
-            </TableCell>
-            <TableCell className="text-right">
               <Button
                 size="icon"
-                className="bg-in"
-                onClick={() => deleteMarsAddress(address.id)}
+                className="bg-inherit hover:bg-slate-950"
+                onClick={() => deleteMarsAddress(address.id as string)}
               >
                 <Trash className="h-4 w-4" />
               </Button>
