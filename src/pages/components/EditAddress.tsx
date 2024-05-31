@@ -35,7 +35,7 @@ export function EditAddress({
   return (
     <Dialog open={isOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>Editar endereço</DialogTitle>
           <DialogDescription>

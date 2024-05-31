@@ -3,6 +3,7 @@ import { ReactNode, createContext, useState, useEffect } from 'react'
 export interface EarthAddressInterface {
   id: string
   street: string
+  city: string
   homeNumber: string
   uf: string
   postalCode: string

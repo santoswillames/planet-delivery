@@ -40,6 +40,7 @@ export function EarthForm({ address, onChangeDialog }: EarthFormProps) {
     resolver: zodResolver(EarthFormSchema),
     defaultValues: address || {
       street: '',
+      city: '',
       homeNumber: '',
       country: '',
       postalCode: '',
@@ -101,6 +102,23 @@ export function EarthForm({ address, onChangeDialog }: EarthFormProps) {
         />
         <FormField
           control={form.control}
+          name="city"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Cidade</FormLabel>
+              <FormControl>
+                <Input
+                  className="relative block w-full appearance-none rounded-md border border-zinc-600 bg-zinc-800 px-3 py-2 text-slate-50 placeholder-zinc-400 focus:z-10 focus:border-zinc-500 focus:outline-none focus:ring-zinc-500 sm:text-sm"
+                  placeholder="Digite o nome da Cidade"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="homeNumber"
           render={({ field }) => (
             <FormItem>
@@ -117,7 +135,7 @@ export function EarthForm({ address, onChangeDialog }: EarthFormProps) {
             </FormItem>
           )}
         />
-        <div className="md:flex items-center justify-between flex-wrap gap-2">
+        <div className="sm:flex items-center justify-between flex-wrap gap-2">
           <FormField
             control={form.control}
             name="uf"

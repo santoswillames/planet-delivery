@@ -10,6 +10,15 @@ export const EarthFormSchema = z.object({
     .max(90, {
       message: 'Número de caracteres exedido! Maxímo 90 caracteres',
     }),
+  city: z
+    .string()
+    .trim()
+    .min(1, {
+      message: 'Este campo é obrigatório',
+    })
+    .max(90, {
+      message: 'Número de caracteres exedido! Maxímo 90 caracteres',
+    }),
   homeNumber: z
     .string()
     .trim()

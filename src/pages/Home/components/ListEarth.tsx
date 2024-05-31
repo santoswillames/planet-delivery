@@ -27,7 +27,8 @@ export function ListEarth() {
     <Table>
       <TableHeader>
         <TableRow className="hover:bg-slate-900">
-          <TableHead className="w-80">Rua, número</TableHead>
+          <TableHead>Rua, número</TableHead>
+          <TableHead>Cidade</TableHead>
           <TableHead>UF</TableHead>
           <TableHead>CEP</TableHead>
           <TableHead>País</TableHead>
@@ -37,9 +38,10 @@ export function ListEarth() {
       <TableBody>
         {earthAddress.map((address) => (
           <TableRow key={address.id} className="hover:bg-slate-900">
-            <TableCell className="text-slate-50 w-80">
+            <TableCell className="text-slate-50 ">
               {address.street + ', ' + address.homeNumber}
             </TableCell>
+            <TableCell className="text-slate-50">{address.city}</TableCell>
             <TableCell className="text-slate-50">{address.uf}</TableCell>
             <TableCell className="text-slate-50">
               {address.postalCode}
